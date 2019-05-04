@@ -6,18 +6,19 @@
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
   </head>
   <body>
-    <h3>SVG Bar</h3>
-    <svg>
-        <rect width="50" height="200" style="fill: blue"></rect>
+    <h3>SVG Circle</h3>
+    <svg width ="50" height="50">
+        <circle cx="25" cy="25" r="25" style="fill: blue"></circle>
     </svg>
 
-    <h3>D3 Bar</h3>
+    <h3>D3 Circle</h3>
     <script>
         d3.select("body")
-        .append("svg") //Append to the svg tag
-        .append("rect") //Append a rect tag
-        .attr("width", 50) //Add width attribute
-        .attr("height", 200) //Add height attribute
+        .append("svg") 
+        .append("circle") 
+        .attr("cx", 50) 
+        .attr("cy", 50)
+        .attr("r", 50) 
         .style("fill", "blue"); //Fill blue
     </script>
   </body>
