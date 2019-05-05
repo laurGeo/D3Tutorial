@@ -23,7 +23,7 @@
         .enter()
         .append("rect")
             .attr("x", function(d,i){
-                return i*21;
+                return (i * w / dataset.length);
             })
             .attr("y", 0)
             .attr("width", 20)
