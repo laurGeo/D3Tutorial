@@ -6,21 +6,28 @@
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
   </head>
   <body>
-    <h3>SVG Text</h3>
-    <svg width ="250" height="50">
-        <text x="0" y="25">Easy</text>
-    </svg>
 
-    <h3>D3 Text</h3>
     <script>
-        d3.select("body")
+       var w = 500;
+       var h = 100;
+       var padding = 2;
+       var dataset = [5,10,15,20,25];
+       var svg = d3.select("body")
         .append("svg")
-        .attr("width", 250) 
-        .attr("height", 50)
-        .append("text")
-        .text("Easy")
-        .attr("x", 0)
-        .attr("y", 25) 
+        .attr("width", w)
+        .style("padding", padding)
+        .attr("height", h);
+
+        svg.selectAll("rect")
+        .data(dataset)
+        .enter()
+        .append("rect")
+            .attr("x", function(d,i){
+                return i*21;
+            })
+            .attr("y", 0)
+            .attr("width", 20)
+            .attr("height", 100);
         
     </script>
   </body>
