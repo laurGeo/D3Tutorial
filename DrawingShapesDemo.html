@@ -6,20 +6,22 @@
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
   </head>
   <body>
-    <h3>SVG Circle</h3>
-    <svg width ="50" height="50">
-        <circle cx="25" cy="25" r="25" style="fill: blue"></circle>
+    <h3>SVG Text</h3>
+    <svg width ="250" height="50">
+        <text x="0" y="25">Easy</text>
     </svg>
 
-    <h3>D3 Circle</h3>
+    <h3>D3 Text</h3>
     <script>
         d3.select("body")
-        .append("svg") 
-        .append("circle") 
-        .attr("cx", 50) 
-        .attr("cy", 50)
-        .attr("r", 50) 
-        .style("fill", "blue"); //Fill blue
+        .append("svg")
+        .attr("width", 250) 
+        .attr("height", 50)
+        .append("text")
+        .text("Easy")
+        .attr("x", 0)
+        .attr("y", 25) 
+        
     </script>
   </body>
 </html>
