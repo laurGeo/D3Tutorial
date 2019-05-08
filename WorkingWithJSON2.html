@@ -29,13 +29,18 @@
 
                 var viz = svg.append("path")
                 .attr({
-                    d: lineFun(ds),
+                    d: lineFun(ds.monthlySales),
                     "stroke" : "purple",
                     "stroke-width" : 2,
                     "fill" : "none"
                 });
             }
             
+            function showHeader(){
+                d3.select("body").append("h1")
+                    .text(ds.category + "Sales (2013");
+            }
+
             d3.json("MonthlySalesByCategory.JSON", function(error, data){
                 if(error){
                     console.log(error);
@@ -43,8 +48,10 @@
                     console.log(data);
                     ds=data;
                 }
+
+                showHeader();
             buildLine();
-            showTotals();
+            
             });
 
 
