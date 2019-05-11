@@ -1,83 +1,110 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="UTF-8">
     <title>Working with Axis </title>
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-  </head>
-  <body>
-        <script>
-            var h=100;
-            var w= 400;
+    <style>
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: black;
+            shape-rendering: crispEdges;
+        }
 
-            var ds; //Global var for data
+        .axis text {
+            font-family: sans-serif;
+            font-size: 10px;
+        }
+
+        h1 {
+            font-family: sans-serif;
+            font-weight: 300;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        var h = 150;
+        var w = 300;
+        var padding = 20;
+        var ds; //Global var for data
 
 
-            function buildLine(ds) {
+        function buildLine(ds) {
 
-console.log('xscale-max: '+ d3.max(ds.monthlySales, function (d){ return d.month; }));
-console.log('yscale-max: '+ d3.max(ds.monthlySales, function (d){ return d.sales; }));
+            console.log('xscale-max: ' + d3.max(ds.monthlySales, function (d) { return d.month; }));
+            console.log('yscale-max: ' + d3.max(ds.monthlySales, function (d) { return d.sales; }));
 
-//scales
-var xScale = d3.scale.linear()
-            .domain([
-                        d3.min(ds.monthlySales, function(d){ return d.month;}) ,
-                        d3.max(ds.monthlySales, function(d){ return d.month;})
-                    ])                
-            .range([0, w])
-            .nice();        
+            //scales
+            var xScale = d3.scale.linear()
+                .domain([
+                    d3.min(ds.monthlySales, function (d) { return d.month; }),
+                    d3.max(ds.monthlySales, function (d) { return d.month; })
+                ])
+                .range([padding+5, w-padding])
+                .nice();
 
 
-var yScale = d3.scale.linear()
-            .domain([0, d3.max(ds.monthlySales, function(d){ return d.sales;})])
-            .range([h,0])
-            .nice();
+            var yScale = d3.scale.linear()
+                .domain([0, d3.max(ds.monthlySales, function (d) { return d.sales; })])
+                .range([h-padding, 10])
+                .nice();
 
-var lineFun = d3.svg.line()
-    .x(function (d) {return xScale(d.month); } )
-    .y(function (d) {return yScale(d.sales); })
-    .interpolate("linear");
-    
-var svg = d3.select("body").append("svg").attr({ width:w, height:h});
+            var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(4);
 
-var viz = svg.append("path")
-            .attr({
-                d: lineFun(ds.monthlySales),
-                "stroke" : "purple",
-                "stroke-width": 2,
-                "fill" : "none"
-            });
+            var lineFun = d3.svg.line()
+                .x(function (d) { return xScale(d.month); })
+                .y(function (d) { return yScale(d.sales); })
+                .interpolate("linear");
 
-}
-            
-            function showHeader(ds){
-                d3.select("body").append("h1")
-                    .text(ds.category + "Sales (2013");
+            var svg = d3.select("body").append("svg").attr({ width: w, height: h });
+
+            var axis = svg.append("g").call(yAxis)
+                .attr("class", "axis")
+                .attr("transform", "translate(" + padding + ", 0)");
+
+            var viz = svg.append("path")
+                .attr({
+                    d: lineFun(ds.monthlySales),
+                    "stroke": "purple",
+                    "stroke-width": 2,
+                    "fill": "none"
+                });
+
+        }
+
+        function showHeader(ds) {
+            d3.select("body").append("h1")
+                .text(ds.category + "Sales (2013");
+        }
+
+        d3.json("https://api.github.com/repos/bsullins/d3js-resources/contents/monthlySalesbyCategoryMultiple.json", function (error, data) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log(data);
             }
-
-            d3.json("https://api.github.com/repos/bsullins/d3js-resources/contents/monthlySalesbyCategoryMultiple.json", function(error, data){
-                if(error){
-                    console.log(error);
-                }else{
-                    console.log(data); 
-                }
 
             var decodedData = JSON.parse(window.atob(data.content));
 
             console.log(decodedData.contents);
-              
-            decodedData.contents.forEach(function(ds){
+
+            decodedData.contents.forEach(function (ds) {
                 console.log(ds);
                 showHeader(ds);
                 buildLine(ds);
             });
- 
-            
-            });
 
 
-        </script>
+        });
 
-  </body>
-  
+
+    </script>
+
+</body>
+
 </html>
