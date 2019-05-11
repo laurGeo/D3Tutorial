@@ -119,7 +119,8 @@ var viz = svg.append("path")
 
             var xAxisGen = d3.svg.axis().scale(xScale)
                             .orient("bottom")
-                            .tickFormat(d3.time.format("%b"));
+                            .tickFormat(d3.time.format("%b"))
+                            .ticks(ds.monthlySales.length-1);
 
             var yAxisGen = d3.svg.axis().scale(yScale)
                             .orient("left")
