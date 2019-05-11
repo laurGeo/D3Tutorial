@@ -31,34 +31,45 @@
         var h = 150;
         var w = 600;
         var padding = 20;
-        var ds; //Global var for data
+        
+        function getDate(d){
+            20130403
+            var strDate = new String(d);
+            var year = strDate.substr(0,4);
+            var month = strDate.substr(4,2)-1;
+            var day = strDate.substr(6,2);
+
+            return new Date(year, month, day);
+        }
 
 
         function buildLine(ds) {
 
-            console.log('xscale-max: ' + d3.max(ds.monthlySales, function (d) { return d.month; }));
-            console.log('yscale-max: ' + d3.max(ds.monthlySales, function (d) { return d.sales; }));
+            //console.log('xscale-max: ' + d3.max(ds.monthlySales, function (d) { return d.month; }));
+            //console.log('yscale-max: ' + d3.max(ds.monthlySales, function (d) { return d.sales; }));
+
+            var minDate = getDate(ds.monthlySales[0]['month']);
+            var maxDate = getDate(ds.monthlySales[ds.monthlySales.length-1]['month']);
+            
+            console.log("min" + minDate);
+            console.log("max" + maxDate);
 
             //scales
-            var xScale = d3.scale.linear()
-                .domain([
-                    d3.min(ds.monthlySales, function (d) { return d.month; }),
-                    d3.max(ds.monthlySales, function (d) { return d.month; })
-                ])
+            var xScale = d3.time.scale()
+                .domain([minDate, maxDate])
                 .range([padding+5, w-padding])
-                .nice();
-
+                
 
             var yScale = d3.scale.linear()
                 .domain([0, d3.max(ds.monthlySales, function (d) { return d.sales; })])
                 .range([h-padding, 10])
                 .nice();
 
-            var xAxisGen = d3.svg.axis().scale(xScale).orient("bottom").ticks(10);
+            var xAxisGen = d3.svg.axis().scale(xScale).orient("bottom").tickFormat(d3.time.format("%b"));
             var yAxisGen = d3.svg.axis().scale(yScale).orient("left").ticks(4);
 
             var lineFun = d3.svg.line()
-                .x(function (d) { return xScale(d.month); })
+                .x(function (d) { return xScale(getDate(d.month)); })
                 .y(function (d) { return yScale(d.sales); })
                 .interpolate("linear");
 
