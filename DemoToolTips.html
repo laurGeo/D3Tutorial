@@ -23,7 +23,7 @@
             else if (v > 20) { return "#FF0033"; }
         }
 
-        svg.selectAll("rect")
+        svg.selectAll("rect")          
             .data(dataset)
             .enter()
             .append("rect")
@@ -34,8 +34,24 @@
                 height: function (d) { return d * 4; },
                 fill: function (d) { return colorPicker(d); }
             })
-            .append("title")
-            .text(function(d){return d;})
+            .on("mouseover", function (d) {
+                svg.append("text")
+                    .text(d)
+                    .attr({
+                        "text-anchor": "middle",
+                        x: parseFloat(d3.select(this).attr("x")) + parseFloat(d3.select(this).attr("width")/2),
+                        y: parseFloat(d3.select(this).attr("y"))+12,
+                        "font-family": "sans-serif",
+                        "font-size": 12,
+                        "fill": "#ffffff",
+                        "id": "tooltip"
+                    });
+
+            })
+            .on("mouseout", function(){
+                d3.select("#tooltip").remove()
+            });
+
 
     </script>
 
